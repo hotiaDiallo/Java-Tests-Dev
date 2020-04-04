@@ -1,20 +1,20 @@
 package com.dummy.myerp.business.impl.manager;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
+import com.dummy.myerp.model.bean.comptabilite.*;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.transaction.TransactionStatus;
 import com.dummy.myerp.business.contrat.manager.ComptabiliteManager;
 import com.dummy.myerp.business.impl.AbstractBusinessManager;
-import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
-import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
-import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
-import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
 import com.dummy.myerp.technical.exception.NotFoundException;
 
@@ -58,23 +58,89 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
     /**
      * {@inheritDoc}
      */
-    // TODO à tester
+    // TODO à tester : DONE
     @Override
     public synchronized void addReference(EcritureComptable pEcritureComptable) {
-        // TODO à implémenter
-        // Bien se réferer à la JavaDoc de cette méthode !
-        /* Le principe :
-                1.  Remonter depuis la persitance la dernière valeur de la séquence du journal pour l'année de l'écriture
-                    (table sequence_ecriture_comptable)
-                2.  * S'il n'y a aucun enregistrement pour le journal pour l'année concernée :
-                        1. Utiliser le numéro 1.
-                    * Sinon :
-                        1. Utiliser la dernière valeur + 1
-                3.  Mettre à jour la référence de l'écriture avec la référence calculée (RG_Compta_5)
-                4.  Enregistrer (insert/update) la valeur de la séquence en persitance
-                    (table sequence_ecriture_comptable)
-         */
+
+        String[] regex = new String[]{"/", "-"}; //séparateurs
+
+        String reference_ecriture = pEcritureComptable.getReference();
+        if(reference_ecriture == null){
+            reference_ecriture = this.createReference(pEcritureComptable.getJournal().getCode(), pEcritureComptable.getDate(), regex);
+        }
+
+        String[] referncesValues = extractReferenceValues(reference_ecriture, regex); // [0] --> XX, [1] -> annee de l'écriture, [2] -> Numéro
+        SequenceEcritureComptable sequenceEcritureComptable = null;
+        if( referncesValues[1] != null ){
+            int annee = Integer.parseInt(referncesValues[1]);
+            try {
+                //Remonter depuis la persitance la dernière valeur de la séquence du journal pour l'année de l'écriture (table sequence_ecriture_comptable)
+                sequenceEcritureComptable = getDaoProxy().getComptabiliteDao().selectSequenceEcritureComptable(annee, referncesValues[0]);
+                int numero = sequenceEcritureComptable.getDerniereValeur();
+                // Utiliser la dernière valeur + 1
+                numero++;
+                referncesValues[2] = createNumberForReference(numero); // Recréer le #####
+                getDaoProxy().getComptabiliteDao().updateSequenceEcritureComptable(Integer.parseInt(referncesValues[1]), numero, referncesValues[0]);
+            } catch (NotFoundException nfe){
+                referncesValues[2] = createNumberForReference(1); // On recrée le #####
+                getDaoProxy().getComptabiliteDao().insertSequenceEcritureComptable(annee, Integer.parseInt(referncesValues[2]),referncesValues[0] );
+            }
+
+            //Recréer la nouvelle référence.
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(referncesValues[0]).append(regex[1]).append(referncesValues[1]).append(regex[0]).append(referncesValues[2]);
+            String rebuiltReference = stringBuilder.toString();
+            // rajouter la référence à l'écriture comptable
+            pEcritureComptable.setReference(rebuiltReference);
+        }
     }
+
+    /**
+     *
+     * @param code
+     * @param date
+     * @param regex
+     * @return
+     */
+    // Format Référence : XX-AAAA/#####
+    private String createReference(String code, Date date, String[] regex) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        String annee = Integer.toString(cal.get(Calendar.YEAR));
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(code).append(regex[1]).append(annee).append(regex[0]).append("00000");
+
+        return stringBuilder.toString();
+    }
+
+    // Format à extraire XX-AAAA/#####
+    private String[] extractReferenceValues(String libelle,String[] regex){
+
+        String[] resultList = new String[]{null, null, null};
+        // séparer XX-AAA et #####
+        String[] delim1 = libelle.split(regex[0]);
+        if(delim1.length == 3){
+            resultList[2] = delim1[1];  // Récupèrer #####
+            String[] second_delim = delim1[0].split(regex[1]); // Sépare XX et AAAA
+            if(second_delim.length == 2){
+                resultList[1] = second_delim[1]; // récupèrer AAAA
+                resultList[0] = second_delim[0]; // récupérer XX
+            }
+        }
+        return resultList;
+    }
+
+    private String createNumberForReference(int numero){
+        String result = Integer.toString(numero);
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int i =   5 - result.length(); i > 0; i--){
+            stringBuilder.append("0");
+        }
+        stringBuilder.append(result);
+        result = stringBuilder.toString();
+        return result;
+    }
+
 
     /**
      * {@inheritDoc}
