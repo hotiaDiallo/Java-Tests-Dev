@@ -7,7 +7,6 @@
     <!-- Transaction Manager -->
     <bean id="TransactionManager"
           class="com.dummy.myerp.business.impl.TransactionManager"
-          scope="singleton"
           factory-method="getInstance">
         <constructor-arg ref="txManagerMYERP"/>
     </bean>

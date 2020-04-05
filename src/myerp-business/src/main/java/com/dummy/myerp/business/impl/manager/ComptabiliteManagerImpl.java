@@ -89,9 +89,10 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
             //Recréer la nouvelle référence.
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(referncesValues[0]).append(regex[1]).append(referncesValues[1]).append(regex[0]).append(referncesValues[2]);
-            String rebuiltReference = stringBuilder.toString();
+            String newReference = stringBuilder.toString();
+
             // rajouter la référence à l'écriture comptable
-            pEcritureComptable.setReference(rebuiltReference);
+            pEcritureComptable.setReference(newReference);
         }
     }
 
@@ -119,14 +120,10 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         String[] resultList = new String[]{null, null, null};
         // séparer XX-AAA et #####
         String[] delim1 = libelle.split(regex[0]);
-        if(delim1.length == 3){
-            resultList[2] = delim1[1];  // Récupèrer #####
-            String[] second_delim = delim1[0].split(regex[1]); // Sépare XX et AAAA
-            if(second_delim.length == 2){
-                resultList[1] = second_delim[1]; // récupèrer AAAA
-                resultList[0] = second_delim[0]; // récupérer XX
-            }
-        }
+        resultList[2] = delim1[1];  // Récupèrer #####
+        String[] second_delim = delim1[0].split(regex[1]); // Sépare XX et AAAA
+        resultList[1] = second_delim[1]; // récupèrer AAAA
+        resultList[0] = second_delim[0]; // récupérer XX
         return resultList;
     }
 

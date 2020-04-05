@@ -4,11 +4,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
 
-    <!-- ====================   Business-Proxy   ==================== -->
-
-    <!-- BusinessProxy -->
-    <bean id="BusinessProxy" class="com.dummy.myerp.business.impl.BusinessProxyImpl"/>
-
-    <!-- Transaction Manager -->
-    <bean id="TransactionManager" class="com.dummy.myerp.business.impl.TransactionManager"/>
+    <import resource="classpath:/com/dummy/myerp/business/businessContext.xml"/>
+    <import resource="classpath:/com/dummy/myerp/consumer/consumerContext.xml"/>
 </beans>
