@@ -14,7 +14,9 @@ public class SequenceEcritureComptableRM implements RowMapper<SequenceEcritureCo
     {
         SequenceEcritureComptable sequenceEcritureComptable = new SequenceEcritureComptable();
         sequenceEcritureComptable.setAnnee(resultSet.getInt("annee"));
+        sequenceEcritureComptable.setJournalCode(resultSet.getString("journal_code"));
         sequenceEcritureComptable.setDerniereValeur(resultSet.getInt("derniere_valeur"));
         return sequenceEcritureComptable;
     }
+
 }

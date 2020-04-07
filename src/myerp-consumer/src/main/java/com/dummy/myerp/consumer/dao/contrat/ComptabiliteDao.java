@@ -87,4 +87,8 @@ public interface ComptabiliteDao {
     void updateSequenceEcritureComptable(int annee, int derniereValeur, String code);
 
     void insertSequenceEcritureComptable(int annee, int derniereValeur, String code);
+
+    SequenceEcritureComptable getSequenceByCodeAndAnneeCourante(SequenceEcritureComptable pSequence) throws NotFoundException;
+
+    void upsertSequenceEcritureComptable(SequenceEcritureComptable pSequence);
 }

@@ -59,40 +59,97 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
      * {@inheritDoc}
      */
     // TODO à tester : DONE
+//    @Override
+//    public synchronized void addReference(EcritureComptable pEcritureComptable) {
+//
+//        String[] regex = new String[]{"/", "-"}; //séparateurs
+//
+//        String reference_ecriture = pEcritureComptable.getReference();
+//        if(reference_ecriture == null){
+//            reference_ecriture = this.createReference(pEcritureComptable.getJournal().getCode(), pEcritureComptable.getDate(), regex);
+//        }
+//
+//        String[] referncesValues = extractReferenceValues(reference_ecriture, regex); // [0] --> XX, [1] -> annee de l'écriture, [2] -> Numéro
+//        SequenceEcritureComptable sequenceEcritureComptable = null;
+//        if( referncesValues[1] != null ){
+//            int annee = Integer.parseInt(referncesValues[1]);
+//            try {
+//                //Remonter depuis la persitance la dernière valeur de la séquence du journal pour l'année de l'écriture (table sequence_ecriture_comptable)
+//                sequenceEcritureComptable = getDaoProxy().getComptabiliteDao().selectSequenceEcritureComptable(annee, referncesValues[0]);
+//                int numero = sequenceEcritureComptable.getDerniereValeur();
+//                // Utiliser la dernière valeur + 1
+//                numero++;
+//                referncesValues[2] = createNumberForReference(numero); // Recréer le #####
+//                getDaoProxy().getComptabiliteDao().updateSequenceEcritureComptable(Integer.parseInt(referncesValues[1]), numero, referncesValues[0]);
+//            } catch (NotFoundException nfe){
+//                referncesValues[2] = createNumberForReference(1); // On recrée le #####
+//                getDaoProxy().getComptabiliteDao().insertSequenceEcritureComptable(annee, Integer.parseInt(referncesValues[2]),referncesValues[0] );
+//            }
+//
+//            //Recréer la nouvelle référence.
+//            StringBuilder stringBuilder = new StringBuilder();
+//            stringBuilder.append(referncesValues[0]).append(regex[1]).append(referncesValues[1]).append(regex[0]).append(referncesValues[2]);
+//            String newReference = stringBuilder.toString();
+//
+//            // rajouter la référence à l'écriture comptable
+//            pEcritureComptable.setReference(newReference);
+//        }
+//    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public synchronized void addReference(EcritureComptable pEcritureComptable) {
+    public synchronized void addReference(EcritureComptable pEcritureComptable) throws FunctionalException, NotFoundException {
+        // Bien se réferer à la JavaDoc de cette méthode !
+        /* Le principe :
+                1.  Remonter depuis la persitance la dernière valeur de la séquence du journal pour l'année de l'écriture
+                    (table sequence_ecriture_comptable)
+        */
+        Integer vEcritureComptableYear = Integer.parseInt(new SimpleDateFormat("yyyy").format(pEcritureComptable.getDate()));
+        SequenceEcritureComptable vRechercheSequence = new SequenceEcritureComptable();
+        vRechercheSequence.setJournalCode(pEcritureComptable.getJournal().getCode());
+        vRechercheSequence.setAnnee(vEcritureComptableYear);
+        SequenceEcritureComptable vExistingSequence = getDaoProxy().getComptabiliteDao().getSequenceByCodeAndAnneeCourante(vRechercheSequence);
+        /*        2.  * S'il n'y a aucun enregistrement pour le journal pour l'année concernée :
+                        1. Utiliser le numéro 1.
+                    * Sinon :
+                        1. Utiliser la dernière valeur + 1
+        */
+        Integer vNumeroSequence;
+        if (vExistingSequence == null) vNumeroSequence = 1;
+        else vNumeroSequence = vExistingSequence.getDerniereValeur() + 1;
+        /*
+                3.  Mettre à jour la référence de l'écriture avec la référence calculée (RG_Compta_5)
+        */
+        String vReference = pEcritureComptable.getJournal().getCode() +
+                "-" + vEcritureComptableYear +
+                "/" + String.format("%05d", vNumeroSequence);
+        pEcritureComptable.setReference(vReference);
+        this.updateEcritureComptable(pEcritureComptable);
+        /*
+                4.  Enregistrer (insert/update) la valeur de la séquence en persistance
+                    (table sequence_ecriture_comptable)
+        */
+        SequenceEcritureComptable vNewSequence = new SequenceEcritureComptable();
+        vNewSequence.setJournalCode(pEcritureComptable.getJournal().getCode());
+        vNewSequence.setAnnee(vEcritureComptableYear);
+        vNewSequence.setDerniereValeur(vNumeroSequence);
+        //this.upsertSequenceEcritureComptable(vNewSequence);
+    }
 
-        String[] regex = new String[]{"/", "-"}; //séparateurs
-
-        String reference_ecriture = pEcritureComptable.getReference();
-        if(reference_ecriture == null){
-            reference_ecriture = this.createReference(pEcritureComptable.getJournal().getCode(), pEcritureComptable.getDate(), regex);
-        }
-
-        String[] referncesValues = extractReferenceValues(reference_ecriture, regex); // [0] --> XX, [1] -> annee de l'écriture, [2] -> Numéro
-        SequenceEcritureComptable sequenceEcritureComptable = null;
-        if( referncesValues[1] != null ){
-            int annee = Integer.parseInt(referncesValues[1]);
-            try {
-                //Remonter depuis la persitance la dernière valeur de la séquence du journal pour l'année de l'écriture (table sequence_ecriture_comptable)
-                sequenceEcritureComptable = getDaoProxy().getComptabiliteDao().selectSequenceEcritureComptable(annee, referncesValues[0]);
-                int numero = sequenceEcritureComptable.getDerniereValeur();
-                // Utiliser la dernière valeur + 1
-                numero++;
-                referncesValues[2] = createNumberForReference(numero); // Recréer le #####
-                getDaoProxy().getComptabiliteDao().updateSequenceEcritureComptable(Integer.parseInt(referncesValues[1]), numero, referncesValues[0]);
-            } catch (NotFoundException nfe){
-                referncesValues[2] = createNumberForReference(1); // On recrée le #####
-                getDaoProxy().getComptabiliteDao().insertSequenceEcritureComptable(annee, Integer.parseInt(referncesValues[2]),referncesValues[0] );
-            }
-
-            //Recréer la nouvelle référence.
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(referncesValues[0]).append(regex[1]).append(referncesValues[1]).append(regex[0]).append(referncesValues[2]);
-            String newReference = stringBuilder.toString();
-
-            // rajouter la référence à l'écriture comptable
-            pEcritureComptable.setReference(newReference);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void upsertSequenceEcritureComptable(SequenceEcritureComptable pSequence) {
+        TransactionStatus vTS = getTransactionManager().beginTransactionMyERP();
+        try {
+            getDaoProxy().getComptabiliteDao().upsertSequenceEcritureComptable(pSequence);
+            getTransactionManager().commitMyERP(vTS);
+            vTS = null;
+        } finally {
+            getTransactionManager().rollbackMyERP(vTS);
         }
     }
 
@@ -224,7 +281,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
      * @param pEcritureComptable -
      * @throws FunctionalException Si l'Ecriture comptable ne respecte pas les règles de gestion
      */
-    protected void checkEcritureComptableContext(EcritureComptable pEcritureComptable) throws FunctionalException {
+    public void checkEcritureComptableContext(EcritureComptable pEcritureComptable) throws FunctionalException {
         // ===== RG_Compta_6 : La référence d'une écriture comptable doit être unique
         if (StringUtils.isNoneEmpty(pEcritureComptable.getReference())) {
             try {

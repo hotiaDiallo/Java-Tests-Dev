@@ -1,53 +1,92 @@
 package com.dummy.myerp.testbusiness.business;
 
+import com.dummy.myerp.business.contrat.manager.ComptabiliteManager;
+import com.dummy.myerp.business.impl.manager.ComptabiliteManagerImpl;
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
 import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
 import com.dummy.myerp.technical.exception.NotFoundException;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
-public class TestBusiness {
+public class TestBusiness extends BusinessTestCase{
+
+    private static ComptabiliteManagerImpl manager;
+    private static ComptabiliteManager managerIntegration;
+    private static EcritureComptable vEcritureComptable;
+    private static Date vCurrentDate;
+    private static Integer vCurrentYear;
+
+    @BeforeAll
+    static void initAll() {
+        manager = new ComptabiliteManagerImpl();
+        managerIntegration = getBusinessProxy().getComptabiliteManager();
+        vCurrentDate = new Date();
+        vCurrentYear = LocalDateTime.ofInstant(vCurrentDate.toInstant(), ZoneId.systemDefault()).toLocalDate().getYear();
+    }
+
+    @BeforeEach
+    void init() {
+        vEcritureComptable = new EcritureComptable();
+    }
+
+    @AfterAll
+    static void tearDownAll() {
+        vEcritureComptable = null;
+    }
 
     /*
         On test que le addRefence fonctionne correctement lorsqu'une référence n'existe pas.
      */
+
     @Test
-    public void testAddReference() throws NotFoundException, FunctionalException {
-        EcritureComptable vEcritureComptable = new EcritureComptable();
-        vEcritureComptable.setJournal(new JournalComptable("BQ", "News"));
-        vEcritureComptable.setDate(new Date());
-        vEcritureComptable.setLibelle("Libelle");
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),
-                null, new BigDecimal(123),
+    void addReference() throws Exception {
+        vEcritureComptable.setId(-1);
+        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+        vEcritureComptable.setDate(new SimpleDateFormat("yyyy/MM/dd").parse("2016/12/31"));
+        vEcritureComptable.setLibelle("Cartouches d’imprimante");
+
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(606),
+                "Cartouches d’imprimante", new BigDecimal(43),
+                null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(4456),
+                "TVA 20%", new BigDecimal(8),
                 null));
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),
-                null, null,
-                new BigDecimal(123)));
+                "Facture F110001", null,
+                new BigDecimal(51)));
 
-        SpringRegistry.getBusinessProxy().getComptabiliteManager().insertEcritureComptable(vEcritureComptable);
+        managerIntegration.addReference(vEcritureComptable);
 
-        SpringRegistry.getBusinessProxy().getComptabiliteManager().addReference(vEcritureComptable);
-        Assert.assertEquals("BQ-2019/00001", vEcritureComptable.getReference());
+        assertThrows(NotFoundException.class, () -> {
+            vEcritureComptable.setDate(vCurrentDate);
+            managerIntegration.addReference(vEcritureComptable);
+        });
     }
+
 
      /*
     RG_Compta_5 : vérifier que l'année dans la référence
     correspond bien à la date de l'écriture
      */
 
-    @Test(expected = FunctionalException.class)
-    public void testCheckEcritureComptable_RG_5_date() throws FunctionalException{
-        EcritureComptable vEcritureComptable;
-        vEcritureComptable = new EcritureComptable();
-        vEcritureComptable.setJournal(new JournalComptable("BQ", "News"));
+    @Test
+    public void testCheckEcritureComptable_RG5_date() throws FunctionalException{
+        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
         vEcritureComptable.setDate(new Date());
-        vEcritureComptable.setLibelle("Libelle");
+        vEcritureComptable.setLibelle("Fournisseurs");
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),
                 null, new BigDecimal(123),
                 null));
@@ -55,18 +94,16 @@ public class TestBusiness {
                 null, null,
                 new BigDecimal(123)));
 
-        vEcritureComptable.setReference("BQ-2018/00001");
+        vEcritureComptable.setReference("AC-2020/00001");
         SpringRegistry.getBusinessProxy().getComptabiliteManager().checkEcritureComptable(vEcritureComptable);
     }
 
     /*
-   RG_Compta_5 : vérifier que le code dans la référence correspond bien à la date dans le journal
+   RG_Compta_5 : vérifier que le code dans la référence correspond bien au dans le journal
     */
     @Test
     public void testCheckEcritureComptable_RG_5_code() throws FunctionalException{
-        EcritureComptable vEcritureComptable;
-        vEcritureComptable = new EcritureComptable();
-        vEcritureComptable.setJournal(new JournalComptable("BQ", "News"));
+        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
         vEcritureComptable.setDate(new Date());
         vEcritureComptable.setLibelle("Libelle");
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),
@@ -76,7 +113,7 @@ public class TestBusiness {
                 null, null,
                 new BigDecimal(123)));
 
-        vEcritureComptable.setReference("BQ-2020/00001");
+        vEcritureComptable.setReference("AC-2020/00001");
         SpringRegistry.getBusinessProxy().getComptabiliteManager().checkEcritureComptable(vEcritureComptable);
     }
 
@@ -84,21 +121,16 @@ public class TestBusiness {
         RG_Compta_6	: Vérification de l'unicité de la référence
      */
 
-    @Test(expected = FunctionalException.class)
-    public void testCheckEcritureComptable_RG_6() throws FunctionalException{
-        EcritureComptable vEcritureComptable;
-        vEcritureComptable = new EcritureComptable();
-        vEcritureComptable.setJournal(new JournalComptable("BQ", "News"));
-        vEcritureComptable.setDate(new Date());
-        vEcritureComptable.setLibelle("Libelle");
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),
-                null, new BigDecimal(123),
-                null));
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),
-                null, null,
-                new BigDecimal(123)));
-
-        vEcritureComptable.setReference("BQ-2016/00001");
-        SpringRegistry.getBusinessProxy().getComptabiliteManager().checkEcritureComptable(vEcritureComptable);
+    @Test
+    void checkEcritureComptableContextRG6() {
+        assertThrows(FunctionalException.class, () -> {
+            vEcritureComptable.setReference("VE-2016/00002");
+            manager.checkEcritureComptableContext(vEcritureComptable);
+        });
+        assertThrows(FunctionalException.class, () -> {
+            vEcritureComptable.setId(0);
+            vEcritureComptable.setReference("VE-2016/00002");
+            manager.checkEcritureComptableContext(vEcritureComptable);
+        });
     }
 }
