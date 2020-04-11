@@ -55,25 +55,20 @@ public class TestBusiness extends BusinessTestCase{
     void addReference() throws Exception {
         vEcritureComptable.setId(-1);
         vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-        vEcritureComptable.setDate(new SimpleDateFormat("yyyy/MM/dd").parse("2016/12/31"));
+        vEcritureComptable.setDate(new SimpleDateFormat("yyyy/MM/dd").parse("2020/04/06"));
         vEcritureComptable.setLibelle("Cartouches d’imprimante");
 
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(606),
-                "Cartouches d’imprimante", new BigDecimal(43),
-                null));
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(4456),
-                "TVA 20%", new BigDecimal(8),
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(411),
+                "Facture C110002", new BigDecimal(3000),
                 null));
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),
-                "Facture F110001", null,
-                new BigDecimal(51)));
+                "Fournisseurs", new BigDecimal(123),
+                null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(706),
+                "TMA Appli Xxx", null,
+                new BigDecimal(2500)));
 
         managerIntegration.addReference(vEcritureComptable);
-
-        assertThrows(NotFoundException.class, () -> {
-            vEcritureComptable.setDate(vCurrentDate);
-            managerIntegration.addReference(vEcritureComptable);
-        });
     }
 
 

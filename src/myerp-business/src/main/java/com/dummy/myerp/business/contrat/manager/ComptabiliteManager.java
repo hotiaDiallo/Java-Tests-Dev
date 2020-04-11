@@ -85,5 +85,5 @@ public interface ComptabiliteManager {
      */
     void deleteEcritureComptable(Integer pId);
 
-    void upsertSequenceEcritureComptable(SequenceEcritureComptable pSequence);
+    void insertOrUpdateSequenceEcritureComptable(SequenceEcritureComptable pSequence);
 }

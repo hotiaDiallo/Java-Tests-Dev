@@ -90,5 +90,5 @@ public interface ComptabiliteDao {
 
     SequenceEcritureComptable getSequenceByCodeAndAnneeCourante(SequenceEcritureComptable pSequence) throws NotFoundException;
 
-    void upsertSequenceEcritureComptable(SequenceEcritureComptable pSequence);
+    void insertOrUpdateSequenceEcritureComptable(SequenceEcritureComptable pSequence);
 }

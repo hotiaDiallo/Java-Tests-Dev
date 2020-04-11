@@ -202,6 +202,6 @@ class ConsumerTest extends ConsumerTestCase {
         vSequenceEcritureComptable.setAnnee(1990);
         vSequenceEcritureComptable.setDerniereValeur(100);
 
-        dao.upsertSequenceEcritureComptable(vSequenceEcritureComptable);
+        dao.insertOrUpdateSequenceEcritureComptable(vSequenceEcritureComptable);
     }
 }
