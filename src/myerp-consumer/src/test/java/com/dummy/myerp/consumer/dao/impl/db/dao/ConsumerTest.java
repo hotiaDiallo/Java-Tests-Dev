@@ -41,41 +41,7 @@ class ConsumerTest extends ConsumerTestCase {
         vEcritureComptable = null;
     }
 
-
-    // ==================== CompteComptable - GET ====================
-
-    /**
-     * Liste des comptes
-     */
-    @Test
-    void getListCompteComptable() {
-        List<CompteComptable> vList = dao.getListCompteComptable();
-        assertEquals(7, vList.size());
-    }
-
-
-    // ==================== JournalComptable - GET ====================
-
-    /**
-     * Liste journal
-     */
-    @Test
-    void getListJournalComptable() {
-        List<JournalComptable> vList = dao.getListJournalComptable();
-        assertEquals(4, vList.size());
-    }
-
-
     // ==================== EcritureComptable - GET ====================
-
-    /**
-     * Liste ecritures
-     */
-    @Test
-    void getListEcritureComptable() {
-        List<EcritureComptable> vList = dao.getListEcritureComptable();
-        assertEquals(5, vList.size());
-    }
 
     /**
      * Ecriture par son id

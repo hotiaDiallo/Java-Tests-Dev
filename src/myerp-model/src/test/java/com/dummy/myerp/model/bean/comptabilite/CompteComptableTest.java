@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class CompteComptableTest {
 
     private static CompteComptable vCompte;
+    private static CompteComptable compte2;
     private static List<CompteComptable> vList;
 
     @BeforeEach
@@ -26,6 +27,10 @@ class CompteComptableTest {
         vList = new ArrayList<>(0);
         vList.add(vCompte);
         vList.add(new CompteComptable(411, "Clients"));
+
+        compte2 = new CompteComptable();
+        compte2.setNumero(401);
+        compte2.setLibelle("Fournisseurs");
     }
 
     @AfterAll
@@ -36,6 +41,13 @@ class CompteComptableTest {
 
     @Test
     void getByNumero() {
-        assertEquals(CompteComptable.getByNumero(vList, 401), vCompte);
+        assertEquals(CompteComptable.getByNumero(vList, 401).getLibelle(),
+                "Fournisseurs");
+    }
+
+    @Test
+    void getByNumeroTest() {
+        assertEquals(CompteComptable.getByNumero(vList, 401),
+                compte2);
     }
 }
