@@ -60,8 +60,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
     // TODO : DONE
     @Override
     public synchronized void addReference(EcritureComptable pEcritureComptable) throws FunctionalException, NotFoundException {
-        //TODO : DONE
-
+        // Bien se réferer à la JavaDoc de cette méthode !
         /* Le principe :
                 1.  Remonter depuis la persitance la dernière valeur de la séquence du journal pour l'année de l'écriture
                     (table sequence_ecriture_comptable)
@@ -95,7 +94,19 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         vNewSequence.setJournalCode(pEcritureComptable.getJournal().getCode());
         vNewSequence.setAnnee(vEcritureComptableYear);
         vNewSequence.setDerniereValeur(vNumeroSequence);
-        this.insertOrUpdateSequenceEcritureComptable(vNewSequence);
+        if (vNumeroSequence == 1){
+            getDaoProxy().getComptabiliteDao().
+                    insertSequenceEcritureComptable(
+                            vEcritureComptableYear,
+                            vNumeroSequence,
+                            pEcritureComptable.getJournal().getCode());
+        }else {
+            getDaoProxy().getComptabiliteDao().
+                    updateSequenceEcritureComptable(
+                            vEcritureComptableYear,
+                            vNumeroSequence,
+                            pEcritureComptable.getJournal().getCode());
+        }
     }
 
     /**
