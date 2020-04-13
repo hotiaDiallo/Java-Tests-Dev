@@ -42,7 +42,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
     /**
      * Constructeur.
      */
-    protected ComptabiliteDaoImpl() {
+    public ComptabiliteDaoImpl() {
         super();
     }
 
@@ -276,7 +276,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
     }
 
     @Override
-    public SequenceEcritureComptable selectSequenceEcritureComptable(int annee, String code) throws NotFoundException {
+    public SequenceEcritureComptable selectSequenceEcritureComptable  (int annee, String code) throws NotFoundException {
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
         MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
         vSqlParams.addValue("annee", annee);
@@ -330,14 +330,18 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
         SQLgetSequenceByCodeAndAnneeCourante = pSQLgetSequenceByCodeAndAnneeCourante;
     }
     @Override
-    public SequenceEcritureComptable getSequenceByCodeAndAnneeCourante(SequenceEcritureComptable pSequence) {
+    public SequenceEcritureComptable getSequenceByCodeAndAnneeCourante(SequenceEcritureComptable pSequence) throws NotFoundException {
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
         SequenceEcritureComptableRM vRM = new SequenceEcritureComptableRM();
         MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
-        vSqlParams.addValue("journal_code", pSequence.getJournalCode());
+        vSqlParams.addValue(JOURNAL_CODE, pSequence.getJournalCode());
         vSqlParams.addValue("annee", pSequence.getAnnee());
 
-        return vJdbcTemplate.queryForObject(SQLgetSequenceByCodeAndAnneeCourante, vSqlParams, vRM);
+        try {
+            return vJdbcTemplate.queryForObject(SQLgetSequenceByCodeAndAnneeCourante, vSqlParams, vRM);
+        } catch (EmptyResultDataAccessException e) {
+            throw new NotFoundException("SequenceEcritureComptable non trouvée : journal_code=" + pSequence.getJournalCode() + ", annee=" + pSequence.getAnnee());
+        }
     }
 
     /** SQLinsertSequenceEcritureComptable */

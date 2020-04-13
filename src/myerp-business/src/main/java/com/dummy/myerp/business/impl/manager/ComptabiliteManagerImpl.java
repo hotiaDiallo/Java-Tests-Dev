@@ -78,6 +78,12 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         Integer vNumeroSequence;
         if (vExistingSequence == null) vNumeroSequence = 1;
         else vNumeroSequence = vExistingSequence.getDerniereValeur() + 1;
+
+        SequenceEcritureComptable vNewSequence = new SequenceEcritureComptable();
+        vNewSequence.setJournalCode(pEcritureComptable.getJournal().getCode());
+        vNewSequence.setAnnee(vEcritureComptableYear);
+        vNewSequence.setDerniereValeur(vNumeroSequence);
+
         /*
                 3.  Mettre à jour la référence de l'écriture avec la référence calculée (RG_Compta_5)
         */
@@ -90,10 +96,6 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
                 4.  Enregistrer (insert/update) la valeur de la séquence en persistance
                     (table sequence_ecriture_comptable)
         */
-        SequenceEcritureComptable vNewSequence = new SequenceEcritureComptable();
-        vNewSequence.setJournalCode(pEcritureComptable.getJournal().getCode());
-        vNewSequence.setAnnee(vEcritureComptableYear);
-        vNewSequence.setDerniereValeur(vNumeroSequence);
         if (vNumeroSequence == 1){
             getDaoProxy().getComptabiliteDao().
                     insertSequenceEcritureComptable(
@@ -180,6 +182,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
                     "L'écriture comptable doit avoir au moins deux lignes : une ligne au débit et une ligne au crédit.");
         }
 
+        // ===== RG_Compta_3 ====
         // vérifier que l'année dans la référence correspond bien à la date de l'écriture, idem pour le code journal...
         String vDate = new SimpleDateFormat("yyyy").format(pEcritureComptable.getDate());
         if (!pEcritureComptable.getReference().substring(3, 7).equals(vDate))
