@@ -54,13 +54,11 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
 
 
     // ==================== TESTS DEJA PRESENTS ET A VALIDER ====================
-
     @Test
     void checkEcritureComptableUnit() throws Exception {
         vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
         vEcritureComptable.setDate(vCurrentDate);
         vEcritureComptable.setLibelle("Libelle");
-        vEcritureComptable.setReference("AC-" + vCurrentYear + "/00001");
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                 null, new BigDecimal(123),
                 null));
@@ -107,11 +105,11 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
         vEcritureComptable.setDate(new Date());
         vEcritureComptable.setLibelle("Libelle");
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
-                null, null,
+                null, new BigDecimal(50),
                 null));
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                 null, null,
-                null));
+                new BigDecimal(50)));
         manager.checkEcritureComptableUnit(vEcritureComptable);
     }
 
@@ -121,61 +119,22 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
      */
     @Test
     void testAddReference() throws Exception {
-        vEcritureComptable = new EcritureComptable();
         vEcritureComptable.setId(-1);
         vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
         vEcritureComptable.setDate(new SimpleDateFormat("yyyy/MM/dd").parse("2016/12/31"));
-        vEcritureComptable.setLibelle("Libelle");
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),
-                null, new BigDecimal(123),
+        vEcritureComptable.setLibelle("Cartouches d’imprimante");
+
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(706),
+                "Prestations de services", null, new BigDecimal(2500)
+        ));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(4456),
+                "TVA 20%", new BigDecimal(2000),
                 null));
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),
-                null, null,
-                new BigDecimal(123)));
-        SpringRegistry.getBusinessProxy().getComptabiliteManager().addReference(vEcritureComptable);
-        assertEquals("AC-2016/00001", vEcritureComptable.getReference());
-    }
+                "Facture F110001",null,
+                new BigDecimal(500)));
 
-    /**
-     *  référence d'une écriture comptable : On test la RG5 avec le code.
-     */
-    @Test
-    public void testCheckEcritureComptable_RG5_code() throws FunctionalException{
-        EcritureComptable vEcritureComptable;
-        vEcritureComptable = new EcritureComptable();
-        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-        vEcritureComptable.setDate(new Date());
-        vEcritureComptable.setLibelle("Libelle");
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),
-                null, new BigDecimal(123),
-                null));
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),
-                null, null,
-                new BigDecimal(123)));
-
-        vEcritureComptable.setReference("AC-2020/00001");
-        manager.checkEcritureComptable(vEcritureComptable);
-    }
-
-    /**
-     *  référence d'une écriture comptable : On test la RG5 avec la date
-     */
-    @Test
-    public void testCheckEcritureComptable_RG5_date() throws FunctionalException{
-        EcritureComptable vEcritureComptable;
-        vEcritureComptable = new EcritureComptable();
-        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-        vEcritureComptable.setDate(new Date());
-        vEcritureComptable.setLibelle("Libelle");
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),
-                null, new BigDecimal(123),
-                null));
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),
-                null, null,
-                new BigDecimal(123)));
-
-        vEcritureComptable.setReference("AC-2018/00001");
-        SpringRegistry.getBusinessProxy().getComptabiliteManager().checkEcritureComptable(vEcritureComptable);
+        managerIntegration.addReference(vEcritureComptable);
     }
 
     @Test

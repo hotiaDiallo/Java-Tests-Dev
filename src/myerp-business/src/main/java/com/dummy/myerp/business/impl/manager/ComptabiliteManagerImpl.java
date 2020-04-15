@@ -182,15 +182,17 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
                     "L'écriture comptable doit avoir au moins deux lignes : une ligne au débit et une ligne au crédit.");
         }
 
-        // ===== RG_Compta_3 ====
+        // ===== RG_Compta_5 ====
         // vérifier que l'année dans la référence correspond bien à la date de l'écriture, idem pour le code journal...
         String vDate = new SimpleDateFormat("yyyy").format(pEcritureComptable.getDate());
-        if (!pEcritureComptable.getReference().substring(3, 7).equals(vDate))
-            throw new FunctionalException(
-                    "L'année dans la référence doit correspondre à la date de l'écriture comptable.");
-        if (!pEcritureComptable.getReference().substring(0, 2).equals(pEcritureComptable.getJournal().getCode()))
-            throw new FunctionalException(
-                    "Le code journal dans la référence doit correspondre au code du journal en question.");
+        if (pEcritureComptable.getReference() != null) {
+            if (!pEcritureComptable.getReference().substring(3, 7).equals(vDate))
+                throw new FunctionalException(
+                        "L'année dans la référence doit correspondre à la date de l'écriture comptable.");
+            if (!pEcritureComptable.getReference().substring(0, 2).equals(pEcritureComptable.getJournal().getCode()))
+                throw new FunctionalException(
+                        "Le code journal dans la référence doit correspondre au code du journal en question.");
+        }
     }
 
     /**
