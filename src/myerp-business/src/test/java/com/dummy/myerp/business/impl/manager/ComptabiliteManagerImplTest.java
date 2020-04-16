@@ -69,6 +69,34 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
     }
 
     @Test
+    void checkEcritureComptableUnitNonEquilibree() throws Exception {
+        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+        vEcritureComptable.setDate(vCurrentDate);
+        vEcritureComptable.setLibelle("Libelle");
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(123),
+                null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+                null, null,
+                new BigDecimal(1234)));
+        manager.checkEcritureComptableUnit(vEcritureComptable);
+    }
+
+    @Test
+    void checkEcritureComptableUnitNbLignes() throws Exception {
+        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+        vEcritureComptable.setDate(vCurrentDate);
+        vEcritureComptable.setLibelle("Libelle");
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null,null,
+                null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+                null, null,
+                null));
+        manager.checkEcritureComptableUnit(vEcritureComptable);
+    }
+
+    @Test
     void checkEcritureComptableUnitViolation() {
         assertThrows(FunctionalException.class, () -> manager.checkEcritureComptableUnit(vEcritureComptable));
     }
