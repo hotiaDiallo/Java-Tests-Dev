@@ -100,7 +100,7 @@
             <value>
                 UPDATE myerp.sequence_ecriture_comptable
                 SET derniere_valeur = :derniere_valeur
-                WHERE annee = :annee
+                WHERE annee = :annee AND journal_code = :code
             </value>
         </property>
         <property name="SQLinsertSequenceEcritureComptable">
