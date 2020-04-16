@@ -6,14 +6,5 @@ jdk:
 
 script: 
   - cd src
-  - ./mvnw clean install
-
-
-jobs:
-  include:
-    - stage: Test
-      script: 
-	- cd src
-	- ./mvnw clean test
-
+  - ./mvnw clean test
 notification:
