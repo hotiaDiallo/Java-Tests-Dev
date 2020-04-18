@@ -1,3 +1,14 @@
 language: java
-script: mvn --batch-mode --file ./src/pom.xml clean test -P test,test-consumer,test-business
+
+addons:
+  sonarcloud:
+    organization: "hotiadiallo"
+    token:
+      secure: "d2ceb43b67f0d0dc583c54bc24e67ccd9394994f" # encrypted value of your token
+      
+#script: mvn --batch-mode --file ./src/pom.xml clean org.jacoco:jacoco-maven-plugin:prepare-agent test -P test-consumer,test-business
+script:
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=hotiaDiallo_Java-Tests-Dev
+#- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=hotiaDiallo_Java-Tests-Dev
 
