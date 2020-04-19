@@ -1,0 +1,15 @@
+/home/ibrahima/Perso/Java-Tests-Dev/src/myerp-consumer/src/main/java/com/dummy/myerp/consumer/dao/impl/db/rowmapper/comptabilite/SequenceEcritureComptableRM.java
+/home/ibrahima/Perso/Java-Tests-Dev/src/myerp-consumer/src/main/java/com/dummy/myerp/consumer/dao/impl/db/rowmapper/comptabilite/LigneEcritureComptableRM.java
+/home/ibrahima/Perso/Java-Tests-Dev/src/myerp-consumer/src/main/java/com/dummy/myerp/consumer/db/helper/ResultSetHelper.java
+/home/ibrahima/Perso/Java-Tests-Dev/src/myerp-consumer/src/main/java/com/dummy/myerp/consumer/dao/impl/db/rowmapper/comptabilite/CompteComptableRM.java
+/home/ibrahima/Perso/Java-Tests-Dev/src/myerp-consumer/src/main/java/com/dummy/myerp/consumer/dao/impl/cache/JournalComptableDaoCache.java
+/home/ibrahima/Perso/Java-Tests-Dev/src/myerp-consumer/src/main/java/com/dummy/myerp/consumer/db/AbstractDbConsumer.java
+/home/ibrahima/Perso/Java-Tests-Dev/src/myerp-consumer/src/main/java/com/dummy/myerp/consumer/dao/impl/db/dao/ComptabiliteDaoImpl.java
+/home/ibrahima/Perso/Java-Tests-Dev/src/myerp-consumer/src/main/java/com/dummy/myerp/consumer/dao/contrat/DaoProxy.java
+/home/ibrahima/Perso/Java-Tests-Dev/src/myerp-consumer/src/main/java/com/dummy/myerp/consumer/dao/impl/db/rowmapper/comptabilite/JournalComptableRM.java
+/home/ibrahima/Perso/Java-Tests-Dev/src/myerp-consumer/src/main/java/com/dummy/myerp/consumer/dao/contrat/ComptabiliteDao.java
+/home/ibrahima/Perso/Java-Tests-Dev/src/myerp-consumer/src/main/java/com/dummy/myerp/consumer/dao/impl/DaoProxyImpl.java
+/home/ibrahima/Perso/Java-Tests-Dev/src/myerp-consumer/src/main/java/com/dummy/myerp/consumer/dao/impl/cache/CompteComptableDaoCache.java
+/home/ibrahima/Perso/Java-Tests-Dev/src/myerp-consumer/src/main/java/com/dummy/myerp/consumer/dao/impl/db/rowmapper/comptabilite/EcritureComptableRM.java
+/home/ibrahima/Perso/Java-Tests-Dev/src/myerp-consumer/src/main/java/com/dummy/myerp/consumer/db/DataSourcesEnum.java
+/home/ibrahima/Perso/Java-Tests-Dev/src/myerp-consumer/src/main/java/com/dummy/myerp/consumer/ConsumerHelper.java
