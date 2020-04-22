@@ -1,8 +1,16 @@
 language: java
-     
-script: mvn --batch-mode --file ./src/pom.xml clean org.jacoco:jacoco-maven-plugin:prepare-agent test -Ptest-consumer, -Ptest-business
-#script:
-  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=hotiaDiallo_Java-Tests-Dev
-#- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=hotiaDiallo_Java-Tests-Dev
-
+sudo: false
+install: true
+addons:
+  sonarcloud:
+    organization: "hotiadiallo"
+    token:
+      secure: "a04ed26cc675e75f94b2219cd42cd45bbe1a6614"
+jdk:
+  - oraclejdk8
+script:
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+    - '$HOME/.sonar/cache'
