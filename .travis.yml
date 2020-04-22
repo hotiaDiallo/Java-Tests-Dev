@@ -7,7 +7,7 @@ addons:
     token:
       secure: "a04ed26cc675e75f94b2219cd42cd45bbe1a6614"
 script:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
+  - mvn --batch-mode --file ./src/pom.xml clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
 cache:
   directories:
     - '$HOME/.m2/repository'
