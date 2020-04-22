@@ -1,5 +1,6 @@
-package com.dummy.myerp.consumer.dao.impl.db.dao;
+package com.dummy.myerp.testconsumer.consumer;
 
+import com.dummy.myerp.consumer.dao.impl.db.dao.ComptabiliteDaoImpl;
 import com.dummy.myerp.model.bean.comptabilite.*;
 import com.dummy.myerp.technical.exception.NotFoundException;
 import com.dummy.myerp.testconsumer.consumer.ConsumerTestCase;
@@ -13,7 +14,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -112,7 +112,7 @@ class ConsumerTest extends ConsumerTestCase {
     void updateEcritureComptable() {
         vEcritureComptable.setId(-4);
         vEcritureComptable.setJournal(new JournalComptable("OD", "Opérations Diverses"));
-        vEcritureComptable.setReference("OD-" + vCurrentYear + "/00200");
+        vEcritureComptable.setReference("OD-" + vCurrentYear + "/00300");
         vEcritureComptable.setDate(vCurrentDate);
         vEcritureComptable.setLibelle("Sandwichs");
 
@@ -165,7 +165,7 @@ class ConsumerTest extends ConsumerTestCase {
     void upsertSequenceEcritureComptable() {
         SequenceEcritureComptable vSequenceEcritureComptable = new SequenceEcritureComptable();
         vSequenceEcritureComptable.setJournalCode("VE");
-        vSequenceEcritureComptable.setAnnee(1990);
+        vSequenceEcritureComptable.setAnnee(1998);
         vSequenceEcritureComptable.setDerniereValeur(100);
 
         dao.insertOrUpdateSequenceEcritureComptable(vSequenceEcritureComptable);

@@ -44,10 +44,4 @@ class CompteComptableTest {
         assertEquals(CompteComptable.getByNumero(vList, 401).getLibelle(),
                 "Fournisseurs");
     }
-
-    @Test
-    void getByNumeroTest() {
-        assertEquals(CompteComptable.getByNumero(vList, 401),
-                compte2);
-    }
 }
