@@ -53,12 +53,6 @@
         <!-- ===== Version properties ===== -->
         <log4j.version>2.8.1</log4j.version>
         <spring.version>4.3.7.RELEASE</spring.version>
-
-        <sonar.projectKey>hotiaDiallo_Java-Tests-Dev</sonar.projectKey>
-        <onar.organization>hotiadiallo1</onar.organization>
-        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-        <sonar.login>12868826f36cdc4f57d43e9a95a5a876cca55e4a</sonar.login>
-        <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
     </properties>
     <!-- =============================================================== -->
     <!-- Modules -->
@@ -281,32 +275,22 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <configuration>
-                    <destFile>${sonar.jacoco.reportPath}</destFile>
-                    <append>true</append>
-                </configuration>
+                <version>0.8.2</version>
                 <executions>
                     <execution>
-                        <id>agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
+                    <!-- attached to Maven test phase -->
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
                 </executions>
-            </plugin>
-
-            <plugin>
-                 <groupId>org.sonarsource.scanner.maven</groupId>
-                 <artifactId>sonar-maven-plugin</artifactId>
-                 <version>3.3.0.603</version>
-                 <executions>
-                   <execution>
-                     <phase>verify</phase>
-                     <goals>
-                       <goal>sonar</goal>
-                     </goals>
-                   </execution>
-                 </executions>
             </plugin>
         </plugins>
         <!-- =============================================================== -->
@@ -314,16 +298,6 @@
         <!-- =============================================================== -->
         <pluginManagement>
             <plugins>
-<!--                <plugin>-->
-<!--                    <groupId>org.jacoco</groupId>-->
-<!--                    <artifactId>jacoco-maven-plugin</artifactId>-->
-<!--                    <version>0.8.0</version>-->
-<!--                </plugin>-->
-<!--                <plugin>-->
-<!--                    <groupId>org.sonarsource.scanner.maven</groupId>-->
-<!--                    <artifactId>sonar-maven-plugin</artifactId>-->
-<!--                    <version>3.4.0.905</version>-->
-<!--                </plugin>-->
                 <!-- ===== Java compilation ===== -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -366,20 +340,6 @@
                     <version>3.0.0</version>
                 </plugin>
 
-                <!-- ===== Assemblage d'éléments (ex: génération du ZIP de déploiement des batches) ===== -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-assembly-plugin</artifactId>
-                    <version>3.0.0</version>
-                </plugin>
-
-                <!-- ===== Déploiement des artifacts ===== -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-deploy-plugin</artifactId>
-                    <version>2.8.2</version>
-                </plugin>
-
                 <!-- ===== Test / Reporting ===== -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -398,6 +358,20 @@
                         </dependency>
                     </dependencies>
                 </plugin>
+                <!-- ===== Assemblage d'éléments (ex: génération du ZIP de déploiement des batches) ===== -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>3.0.0</version>
+                </plugin>
+
+                <!-- ===== Déploiement des artifacts ===== -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.2</version>
+                </plugin>
+
 
                 <!-- ===== Test / Reporting ===== -->
                 <plugin>

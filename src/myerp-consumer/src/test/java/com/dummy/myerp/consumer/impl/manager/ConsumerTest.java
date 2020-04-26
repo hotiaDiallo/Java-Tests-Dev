@@ -1,4 +1,4 @@
-package com.dummy.myerp.testconsumer.consumer;
+package com.dummy.myerp.consumer.impl.manager;
 
 import com.dummy.myerp.consumer.dao.impl.db.dao.ComptabiliteDaoImpl;
 import com.dummy.myerp.model.bean.comptabilite.*;
@@ -17,7 +17,9 @@ import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ConsumerTest extends ConsumerTestCase {
+class
+
+ConsumerTest extends ConsumerTestCase {
 
     private static ComptabiliteDaoImpl dao;
     private static EcritureComptable vEcritureComptable;

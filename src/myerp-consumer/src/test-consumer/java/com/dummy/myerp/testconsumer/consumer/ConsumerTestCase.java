@@ -1,6 +1,7 @@
 package com.dummy.myerp.testconsumer.consumer;
 
 import com.dummy.myerp.consumer.dao.contrat.DaoProxy;
+import com.dummy.myerp.testconsumer.consumer.SpringRegistry;
 
 
 /**
