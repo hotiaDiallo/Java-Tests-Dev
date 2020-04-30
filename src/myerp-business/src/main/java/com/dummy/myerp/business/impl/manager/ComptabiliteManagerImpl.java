@@ -53,6 +53,18 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         return getDaoProxy().getComptabiliteDao().getListEcritureComptable();
     }
 
+    @Override
+    public EcritureComptable getEcritureComptableById(int id) throws NotFoundException {
+        EcritureComptable ec = null;
+        try {
+            ec = getDaoProxy().getComptabiliteDao().getEcritureComptable(id);
+        } catch (NotFoundException nfe){
+            throw new NotFoundException();
+        }
+
+        return ec ;
+    }
+
     /**
      * {@inheritDoc}
      */

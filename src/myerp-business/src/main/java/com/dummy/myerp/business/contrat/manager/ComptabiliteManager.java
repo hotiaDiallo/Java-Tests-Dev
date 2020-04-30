@@ -38,6 +38,8 @@ public interface ComptabiliteManager {
      */
     List<EcritureComptable> getListEcritureComptable();
 
+    EcritureComptable getEcritureComptableById(int id) throws NotFoundException;
+
     /**
      * Ajoute une référence à l'écriture comptable.
      *

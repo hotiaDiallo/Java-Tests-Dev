@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 
 import com.dummy.myerp.business.contrat.manager.ComptabiliteManager;
 import com.dummy.myerp.business.impl.manager.ComptabiliteManagerImpl;
@@ -14,18 +15,16 @@ import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
+import com.dummy.myerp.technical.exception.NotFoundException;
 import com.dummy.myerp.testbusiness.business.BusinessTestCase;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.ContextConfiguration;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-
-@ContextConfiguration(locations = "classpath:bootstrapContext.xml")
-class ComptabilityManagerImplTest extends BusinessTestCase {
+class ComptabiliteManagerImplTest extends BusinessTestCase {
 
     private static ComptabiliteDaoImpl dao;
     private static ComptabiliteManagerImpl manager;
@@ -54,94 +53,6 @@ class ComptabilityManagerImplTest extends BusinessTestCase {
     }
 
     // ==================== TESTS DEJA PRESENTS ET A VALIDER ====================
-    @Test
-    void checkEcritureComptableUnit() throws Exception {
-//        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-//        vEcritureComptable.setDate(vCurrentDate);
-//        vEcritureComptable.setLibelle("Libelle");
-//        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
-//                null, new BigDecimal(123),
-//                null));
-//        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
-//                null, null,
-//                new BigDecimal(123)));
-//        manager.checkEcritureComptableUnit(vEcritureComptable);
-    }
-
-    @Test
-    void checkEcritureComptableUnitNonEquilibree() throws Exception {
-//        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-//        vEcritureComptable.setDate(vCurrentDate);
-//        vEcritureComptable.setLibelle("Libelle");
-//        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
-//                null, new BigDecimal(123),
-//                null));
-//        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
-//                null, null,
-//                new BigDecimal(1234)));
-//        manager.checkEcritureComptableUnit(vEcritureComptable);
-    }
-
-    @Test
-    void checkEcritureComptableUnitNbLignes() throws Exception {
-//        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-//        vEcritureComptable.setDate(vCurrentDate);
-//        vEcritureComptable.setLibelle("Libelle");
-//        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
-//                null,null,
-//                null));
-//        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
-//                null, null,
-//                null));
-//        manager.checkEcritureComptableUnit(vEcritureComptable);
-    }
-
-    @Test
-    void checkEcritureComptableUnitViolation() {
-//        assertThrows(FunctionalException.class, () -> manager.checkEcritureComptableUnit(vEcritureComptable));
-    }
-
-    /**
-     * Tester qu'une ecriture est équilibrée
-     * @throws FunctionalException
-     */
-    @Test
-    void checkEcritureComptableUnitRG2() throws FunctionalException {
-//        EcritureComptable vEcritureComptable;
-//        vEcritureComptable = new EcritureComptable();
-//        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-//        vEcritureComptable.setDate(new Date());
-//        vEcritureComptable.setLibelle("Libelle");
-//        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
-//                null, new BigDecimal(123),
-//                null));
-//        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
-//                null, null,
-//                new BigDecimal(1234)));
-//        manager.checkEcritureComptableUnit(vEcritureComptable);
-    }
-
-    /**
-     * Une écriture comptable doit contenir au moins deux lignes d'écriture :
-     * une au débit et une au crédit
-     */
-    @Test
-    void checkEcritureComptableUnitRG3() throws Exception {
-//        EcritureComptable vEcritureComptable;
-//        vEcritureComptable = new EcritureComptable();
-//        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-//        vEcritureComptable.setDate(new Date());
-//        vEcritureComptable.setLibelle("Libelle");
-//        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
-//                null, new BigDecimal(50),
-//                null));
-//        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
-//                null, null,
-//                new BigDecimal(50)));
-//        manager.checkEcritureComptableUnit(vEcritureComptable);
-    }
-
-    // ==================== TESTS AJOUTES ====================
     /*
         On test que le addRefence fonctionne correctement
      */
@@ -166,6 +77,107 @@ class ComptabilityManagerImplTest extends BusinessTestCase {
     }
 
     @Test
+    void checkEcritureComptable() throws Exception {
+        vEcritureComptable.setJournal(new JournalComptable("VE", "Vente"));
+        vEcritureComptable.setDate(vCurrentDate);
+        vEcritureComptable.setLibelle("Libelle");
+        vEcritureComptable.setReference("VE-" + vCurrentYear + "/00004");
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(123),
+                null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+                null, null,
+                new BigDecimal(123)));
+        manager.checkEcritureComptable(vEcritureComptable);
+    }
+
+    @Test
+    void checkEcritureComptableUnit() throws Exception {
+        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+        vEcritureComptable.setDate(vCurrentDate);
+        vEcritureComptable.setLibelle("Libelle");
+        vEcritureComptable.setReference("AC-" + vCurrentYear + "/00001");
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(123),
+                null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+                null, null,
+                new BigDecimal(123)));
+        manager.checkEcritureComptableUnit(vEcritureComptable);
+    }
+
+    @Test
+    void checkEcritureComptableUnitNonEquilibree() throws Exception {
+        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+        vEcritureComptable.setDate(vCurrentDate);
+        vEcritureComptable.setLibelle("Libelle");
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(123),
+                null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+                null, null,
+                new BigDecimal(123)));
+        manager.checkEcritureComptableUnit(vEcritureComptable);
+    }
+
+    @Test
+    void checkEcritureComptableUnitNbLignes() throws Exception {
+        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+        vEcritureComptable.setDate(vCurrentDate);
+        vEcritureComptable.setLibelle("Libelle");
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null,null,
+                new BigDecimal(123)));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+                null, new BigDecimal(123),
+                null));
+        manager.checkEcritureComptableUnit(vEcritureComptable);
+    }
+
+    @Test
+    void checkEcritureComptableUnitViolation() {
+        assertThrows(FunctionalException.class, () -> manager.checkEcritureComptableUnit(vEcritureComptable));
+    }
+
+    /**
+     * Tester qu'une ecriture est équilibrée
+     * @throws FunctionalException
+     */
+    @Test
+    void checkEcritureComptableUnitRG2() throws FunctionalException {
+        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+        vEcritureComptable.setDate(new Date());
+        vEcritureComptable.setLibelle("Libelle");
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(123),
+                null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+                null, null,
+                new BigDecimal(123)));
+        manager.checkEcritureComptableUnit(vEcritureComptable);
+    }
+
+    /**
+     * Une écriture comptable doit contenir au moins deux lignes d'écriture :
+     * une au débit et une au crédit
+     */
+    @Test
+    void checkEcritureComptableUnitRG3() throws Exception {
+        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+        vEcritureComptable.setDate(new Date());
+        vEcritureComptable.setLibelle("Libelle");
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(50),
+                null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, null,
+                new BigDecimal(50)));
+        manager.checkEcritureComptableUnit(vEcritureComptable);
+    }
+
+    // ==================== TESTS AJOUTES ====================
+
+    @Test
     void checkEcritureComptableContext() throws Exception {
         vEcritureComptable.setReference("AC-2016/00001");
         manager.checkEcritureComptableContext(vEcritureComptable);
@@ -175,8 +187,6 @@ class ComptabilityManagerImplTest extends BusinessTestCase {
      */
     @Test
     public void testCheckEcritureComptable_RG6() throws FunctionalException{
-        EcritureComptable vEcritureComptable;
-        vEcritureComptable = new EcritureComptable();
         vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
         vEcritureComptable.setDate(new Date());
         vEcritureComptable.setLibelle("Libelle");
@@ -190,4 +200,60 @@ class ComptabilityManagerImplTest extends BusinessTestCase {
         vEcritureComptable.setReference("AC-2016/00001");
         manager.checkEcritureComptableContext(vEcritureComptable);
     }
+
+    /*
+           On vérifie que la date de l'écriture corresponde bien avec la référence lors de l'update.
+        */
+    @Test
+    public void updateEcritureComptable() throws FunctionalException, NotFoundException{
+        vEcritureComptable = managerIntegration.getEcritureComptableById(-2);
+        managerIntegration.addReference(vEcritureComptable);
+        managerIntegration.updateEcritureComptable(vEcritureComptable);
+    }
+
+    /*
+    On vérifie bien qu'une fois l'élèment surppimé, nous ne pouvons plus y accéder.
+     */
+
+    @Test
+    public void deleteEcritureComptable() throws NotFoundException, FunctionalException{
+        vEcritureComptable = managerIntegration.getEcritureComptableById(13);
+
+//        vEcritureComptable.setId(51);
+//        managerIntegration.updateEcritureComptable(vEcritureComptable);
+//        managerIntegration.deleteEcritureComptable(51);
+        //managerIntegration.getEcritureComptableById(3);
+    }
+
+     /*
+    On vérifie que l'on récupére bien tous les comptes comptables existants.
+     */
+
+    @Test
+    public void testGetListCompteComptable(){
+        List<CompteComptable> compteComptableList = managerIntegration.getListCompteComptable();
+        //Assert.assertEquals(7, compteComptableList.size());
+    }
+
+    /*
+    On vérifie que l'on récupère bien tous les journalCOmptables existants.
+     */
+    @Test
+    public void testGetListJournalComptable(){
+        List<JournalComptable> journalComptableList = managerIntegration.getListJournalComptable();
+        //Assert.assertEquals(4, journalComptableList.size());
+    }
+
+    /*
+    On vérifie que l'on retrouve bien toutes les écritures comptables existantes.
+     */
+
+    @Test
+    public void testGetListEcritureComptable(){
+        List<EcritureComptable> ecritureComptableList = managerIntegration.getListEcritureComptable();
+        //Assert.assertEquals(5, ecritureComptableList.size());
+    }
+
+
+
 }

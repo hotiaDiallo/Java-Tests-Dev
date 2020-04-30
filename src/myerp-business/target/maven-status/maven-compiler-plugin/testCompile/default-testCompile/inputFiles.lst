@@ -1,1 +1,4 @@
-/home/ibrahima/Perso/Java-Tests-Dev/src/myerp-business/src/test/java/com/dummy/myerp/business/impl/manager/ComptabiliteManagerImplTest.java
+/home/ibrahima/Perso/Projets/my-erp/Java-Tests-Dev/src/myerp-business/src/test-business/java/com/dummy/myerp/testbusiness/business/BusinessTestCase.java
+/home/ibrahima/Perso/Projets/my-erp/Java-Tests-Dev/src/myerp-business/src/test-business/java/com/dummy/myerp/testbusiness/business/SpringRegistry.java
+/home/ibrahima/Perso/Projets/my-erp/Java-Tests-Dev/src/myerp-business/src/test/java/com/dummy/myerp/business/impl/manager/ComptabiliteManagerImplTest.java
+/home/ibrahima/Perso/Projets/my-erp/Java-Tests-Dev/src/myerp-business/src/test-business/java/com/dummy/myerp/testbusiness/business/TestInitSpring.java
