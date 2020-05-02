@@ -50,8 +50,8 @@ ConsumerTest extends ConsumerTestCase {
      */
     @Test
     void getEcritureComptable() throws NotFoundException {
-        EcritureComptable vEcritureComptable = dao.getEcritureComptable(-3);
-        assertEquals("BQ-2016/00003", vEcritureComptable.getReference());
+        EcritureComptable vEcritureComptable = dao.getEcritureComptable(-5);
+        assertEquals("BQ-2016/00005", vEcritureComptable.getReference());
 
         assertThrows(NotFoundException.class, () -> dao.getEcritureComptable(0));
     }
@@ -61,11 +61,11 @@ ConsumerTest extends ConsumerTestCase {
      */
     @Test
     void getEcritureComptableByRef() throws NotFoundException {
-        EcritureComptable vEcritureComptable = dao.getEcritureComptableByRef("BQ-2016/00003");
+        EcritureComptable vEcritureComptable = dao.getEcritureComptableByRef("BQ-2016/00005");
         assertEquals("BQ", vEcritureComptable.getJournal().getCode());
         String vEcritureYear = new SimpleDateFormat("yyyy").format(vEcritureComptable.getDate());
         assertEquals("2016", vEcritureYear);
-        assertEquals(-3, vEcritureComptable.getId().intValue());
+        assertEquals(-5, vEcritureComptable.getId().intValue());
     }
 
     /**
@@ -151,16 +151,16 @@ ConsumerTest extends ConsumerTestCase {
      */
     @Test
     void getSequenceByCodeAndAnneeCourante() throws NotFoundException {
-//        SequenceEcritureComptable vRechercheSequence = new SequenceEcritureComptable();
-//        vRechercheSequence.setJournalCode("OD");
-//        vRechercheSequence.setAnnee(2016);
-//        SequenceEcritureComptable vExistingSequence = dao.getSequenceByCodeAndAnneeCourante(vRechercheSequence);
-//
-//        if (vExistingSequence != null) {
-//            assertEquals("OD", vExistingSequence.getJournalCode());
-//            assertEquals(2016, vExistingSequence.getAnnee().intValue());
-//            assertEquals(88, vExistingSequence.getDerniereValeur().intValue());
-//        } else fail("Incorrect result size: expected 1, actual 0");
+        SequenceEcritureComptable vRechercheSequence = new SequenceEcritureComptable();
+        vRechercheSequence.setJournalCode("OD");
+        vRechercheSequence.setAnnee(2016);
+        SequenceEcritureComptable vExistingSequence = dao.getSequenceByCodeAndAnneeCourante(vRechercheSequence);
+
+        if (vExistingSequence != null) {
+            assertEquals("OD", vExistingSequence.getJournalCode());
+            assertEquals(2016, vExistingSequence.getAnnee().intValue());
+            assertEquals(88, vExistingSequence.getDerniereValeur().intValue());
+        } else fail("Incorrect result size: expected 1, actual 0");
     }
 
     @Test
