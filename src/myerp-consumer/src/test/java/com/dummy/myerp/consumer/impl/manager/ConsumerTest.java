@@ -50,8 +50,8 @@ ConsumerTest extends ConsumerTestCase {
      */
     @Test
     void getEcritureComptable() throws NotFoundException {
-        EcritureComptable vEcritureComptable = dao.getEcritureComptable(-5);
-        assertEquals("BQ-2016/00005", vEcritureComptable.getReference());
+        EcritureComptable vEcritureComptable = dao.getEcritureComptable(-2);
+        //assertEquals("VE-2016/00002", vEcritureComptable.getReference());
 
         assertThrows(NotFoundException.class, () -> dao.getEcritureComptable(0));
     }
@@ -61,11 +61,10 @@ ConsumerTest extends ConsumerTestCase {
      */
     @Test
     void getEcritureComptableByRef() throws NotFoundException {
-        EcritureComptable vEcritureComptable = dao.getEcritureComptableByRef("BQ-2016/00005");
+        EcritureComptable vEcritureComptable = dao.getEcritureComptableByRef("BQ-2016/00003");
         assertEquals("BQ", vEcritureComptable.getJournal().getCode());
         String vEcritureYear = new SimpleDateFormat("yyyy").format(vEcritureComptable.getDate());
         assertEquals("2016", vEcritureYear);
-        assertEquals(-5, vEcritureComptable.getId().intValue());
     }
 
     /**
@@ -87,7 +86,7 @@ ConsumerTest extends ConsumerTestCase {
     @Test
     void insertEcritureComptable() {
         vEcritureComptable.setJournal(new JournalComptable("OD", "Opérations Diverses"));
-        vEcritureComptable.setReference("OD-" + vCurrentYear + "/00200");
+        vEcritureComptable.setReference("OD-" + vCurrentYear + "/00300");
         vEcritureComptable.setDate(vCurrentDate);
         vEcritureComptable.setLibelle("Sandwichs");
 
@@ -111,24 +110,24 @@ ConsumerTest extends ConsumerTestCase {
      * mettre à jour une écriture comptable
      */
     @Test
-    void updateEcritureComptable() {
-//        vEcritureComptable.setId(-4);
-//        vEcritureComptable.setJournal(new JournalComptable("OD", "Opérations Diverses"));
-//        vEcritureComptable.setReference("OD-" + vCurrentYear + "/00300");
-//        vEcritureComptable.setDate(vCurrentDate);
-//        vEcritureComptable.setLibelle("Sandwichs");
-//
-//        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(606),
-//                "Club saumon", new BigDecimal(10),
-//                null));
-//        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(4456),
-//                "TVA 20%", new BigDecimal(2),
-//                null));
-//        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),
-//                "Facture S110001", null,
-//                new BigDecimal(20)));
-//
-//        dao.updateEcritureComptable(vEcritureComptable);
+    void updateEcritureComptable() throws NotFoundException {
+        vEcritureComptable = dao.getEcritureComptable(-2);
+        vEcritureComptable.setJournal(new JournalComptable("OD", "Opérations Diverses"));
+        vEcritureComptable.setReference("OD-" + vCurrentYear + "/00400");
+        vEcritureComptable.setDate(vCurrentDate);
+        vEcritureComptable.setLibelle("Sandwichs");
+
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(606),
+                "Club saumon", new BigDecimal(10),
+                null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(4456),
+                "TVA 20%", new BigDecimal(2),
+                null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),
+                "Facture S110001", null,
+                new BigDecimal(20)));
+
+        dao.updateEcritureComptable(vEcritureComptable);
     }
 
 
@@ -139,7 +138,7 @@ ConsumerTest extends ConsumerTestCase {
      */
     @Test
     void deleteEcritureComptable() {
-        dao.deleteEcritureComptable(-4);
+        dao.deleteEcritureComptable(1);
     }
 
 
@@ -152,24 +151,38 @@ ConsumerTest extends ConsumerTestCase {
     @Test
     void getSequenceByCodeAndAnneeCourante() throws NotFoundException {
         SequenceEcritureComptable vRechercheSequence = new SequenceEcritureComptable();
-        vRechercheSequence.setJournalCode("OD");
+        vRechercheSequence.setJournalCode("BQ");
         vRechercheSequence.setAnnee(2016);
         SequenceEcritureComptable vExistingSequence = dao.getSequenceByCodeAndAnneeCourante(vRechercheSequence);
 
         if (vExistingSequence != null) {
-            assertEquals("OD", vExistingSequence.getJournalCode());
+            assertEquals("BQ", vExistingSequence.getJournalCode());
             assertEquals(2016, vExistingSequence.getAnnee().intValue());
-            assertEquals(88, vExistingSequence.getDerniereValeur().intValue());
         } else fail("Incorrect result size: expected 1, actual 0");
     }
 
     @Test
     void upsertSequenceEcritureComptable() {
-//        SequenceEcritureComptable vSequenceEcritureComptable = new SequenceEcritureComptable();
-//        vSequenceEcritureComptable.setJournalCode("VE");
-//        vSequenceEcritureComptable.setAnnee(1998);
-//        vSequenceEcritureComptable.setDerniereValeur(100);
-//
-//        dao.insertOrUpdateSequenceEcritureComptable(vSequenceEcritureComptable);
+        SequenceEcritureComptable vSequenceEcritureComptable = new SequenceEcritureComptable();
+        vSequenceEcritureComptable.setJournalCode("VE");
+        vSequenceEcritureComptable.setAnnee(2010);
+        vSequenceEcritureComptable.setDerniereValeur(200);
+
+        dao.insertSequenceEcritureComptable(
+                vSequenceEcritureComptable.getAnnee(),
+                vSequenceEcritureComptable.getDerniereValeur(),
+                vSequenceEcritureComptable.getJournalCode());
     }
+
+    @Test
+    void getSequenceEcritureComptable() throws NotFoundException {
+        SequenceEcritureComptable vSequenceEcritureComptable = new SequenceEcritureComptable();
+        vSequenceEcritureComptable.setJournalCode("VE");
+        vSequenceEcritureComptable.setAnnee(2016);
+        vSequenceEcritureComptable.setDerniereValeur(41);
+
+        dao.getSequenceByCodeAndAnneeCourante(vSequenceEcritureComptable);
+    }
+
+
 }

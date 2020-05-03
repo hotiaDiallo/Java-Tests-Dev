@@ -53,31 +53,6 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
         vEcritureComptable = null;
     }
 
-    // ==================== TESTS DEJA PRESENTS ET A VALIDER ====================
-    /*
-        On test que le addRefence fonctionne correctement
-     */
-    @Test
-    void addReference() throws Exception {
-        vEcritureComptable.setId(-1);
-        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-        vEcritureComptable.setDate(new SimpleDateFormat("yyyy/MM/dd").parse("2016/12/31"));
-        vEcritureComptable.setLibelle("Cartouches d’imprimante");
-
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(706),
-                "Prestations de services", null, new BigDecimal(2500)
-        ));
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(4456),
-                "TVA 20%", new BigDecimal(2000),
-                null));
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),
-                "Facture F110001",null,
-                new BigDecimal(500)));
-
-        managerIntegration.addReference(vEcritureComptable);
-        //Assert.assertEquals("AC-2020/00001", vEcritureComptable.getReference());
-    }
-
     @Test
     void checkEcritureComptable() throws Exception {
         vEcritureComptable.setJournal(new JournalComptable("VE", "Vente"));
@@ -105,34 +80,6 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
                 null, null,
                 new BigDecimal(123)));
-        manager.checkEcritureComptableUnit(vEcritureComptable);
-    }
-
-    @Test
-    void checkEcritureComptableUnitNonEquilibree() throws Exception {
-        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-        vEcritureComptable.setDate(vCurrentDate);
-        vEcritureComptable.setLibelle("Libelle");
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
-                null, new BigDecimal(123),
-                null));
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
-                null, null,
-                new BigDecimal(123)));
-        manager.checkEcritureComptableUnit(vEcritureComptable);
-    }
-
-    @Test
-    void checkEcritureComptableUnitNbLignes() throws Exception {
-        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-        vEcritureComptable.setDate(vCurrentDate);
-        vEcritureComptable.setLibelle("Libelle");
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
-                null,null,
-                new BigDecimal(123)));
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
-                null, new BigDecimal(123),
-                null));
         manager.checkEcritureComptableUnit(vEcritureComptable);
     }
 
@@ -177,13 +124,6 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
         manager.checkEcritureComptableUnit(vEcritureComptable);
     }
 
-    // ==================== TESTS AJOUTES ====================
-
-    @Test
-    void checkEcritureComptableContext() throws Exception {
-//        vEcritureComptable.setReference("AC-2016/00001");
-//        manager.checkEcritureComptableContext(vEcritureComptable);
-    }
     /**
      *  On vérifie l'unicité de la référence.
      */
@@ -209,7 +149,6 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
     @Test
     public void updateEcritureComptable() throws FunctionalException, NotFoundException{
         vEcritureComptable = managerIntegration.getEcritureComptableById(-2);
-        managerIntegration.addReference(vEcritureComptable);
         managerIntegration.updateEcritureComptable(vEcritureComptable);
     }
 
@@ -263,7 +202,4 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
 
         managerIntegration.deleteEcritureComptable(vEcritureComptable.getId());
     }
-
-
-
 }
