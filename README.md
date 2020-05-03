@@ -39,7 +39,7 @@ Il comporte :
     docker-compose rm -v
     docker-compose up
     
-### Correctifs
+### Corrections apportées
 * Dans l'entité `EcritureComptable`, correction de la méthode `getTotalCredit()` qui accédait à la méthode `getDebit()` au lieu de `getCredit()`
 * Dans l'entité `EcritureComptable`, correction de la regex pour adapter la référence de sorte à avoir une réfence qui respecte le format suivant`AA-2016/00001`
 * Dans l'entité `EcritureComptable`, correction de la méthode `isEquilibree()` qui retournait le résultat d'une égalité à l'aide de `equals()` au lieu de faire une comparaison avec `compareTo()`
