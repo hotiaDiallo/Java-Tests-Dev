@@ -123,19 +123,18 @@ class IntegrationTest extends BusinessTestCase {
         manager.checkEcritureComptable(vEcritureComptable);
     }
 
+     /*
+        On test que le addReference fonctionne bien lorsqu'une référence existe déjà."
+     */
 
     @Test
-    void checkEcritureComptableUnitNbLignes() throws Exception {
-        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-        vEcritureComptable.setDate(vCurrentDate);
-        vEcritureComptable.setLibelle("Libelle");
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
-                null,null,
-                new BigDecimal(123)));
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
-                null, new BigDecimal(123),
-                null));
-        manager.checkEcritureComptableUnit(vEcritureComptable);
+    public void testAddReferenceExistingReference() throws FunctionalException, NotFoundException{
+        EcritureComptable vEcritureComptableExisting = null;
+        vEcritureComptableExisting = manager.getEcritureComptableById(-3);
+        Assert.assertEquals("BQ-2016/00003", vEcritureComptableExisting.getReference());
+        managerIntegration.addReference(vEcritureComptableExisting);
+        Assert.assertEquals("BQ-2016/00004", vEcritureComptableExisting.getReference());
+        manager.checkEcritureComptable(vEcritureComptableExisting);
     }
 
     @Test
@@ -143,6 +142,10 @@ class IntegrationTest extends BusinessTestCase {
         Assertions.assertThrows(FunctionalException.class, () -> manager.checkEcritureComptableUnit(vEcritureComptable));
     }
 
+    /**
+     * Vérifie que l'Ecriture comptable respecte les règles de gestion liées au contexte
+     *
+     */
 
     @Test
     void checkEcritureComptableContext() throws Exception {

@@ -185,21 +185,16 @@ class ComptabiliteManagerImplTest extends BusinessTestCase {
     On vérifie bien qu'une fois l'élèment surppimé, nous ne pouvons plus y accéder.
      */
 
+     /*
+    On vérifie bien qu'une fois l'élèment surppimé, nous ne pouvons plus y accéder.
+     */
+
     @Test
-    public void deleteEcritureComptable() throws NotFoundException, FunctionalException{
-        vEcritureComptable.setId(10);
-        vEcritureComptable.setJournal(new JournalComptable("DR", "Achat"));
-        vEcritureComptable.setDate(new Date());
-        vEcritureComptable.setLibelle("Libelle");
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(500),
-                null, new BigDecimal(123),
-                null));
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(500),
-                null, null,
-                new BigDecimal(123)));
+    public void testDeleteEcritureComptable() throws NotFoundException{
+        EcritureComptable vEcritureComptableExisting = null;
+        vEcritureComptableExisting = manager.getEcritureComptableById(3);
 
-        vEcritureComptable.setReference("DR-2017/00009");
-
-        managerIntegration.deleteEcritureComptable(vEcritureComptable.getId());
+        getBusinessProxy().getComptabiliteManager().deleteEcritureComptable(3);
+        vEcritureComptableExisting = manager.getEcritureComptableById(3);
     }
 }
