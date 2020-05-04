@@ -20,7 +20,7 @@ Il comporte :
 
 
 
-### Lancement
+### Démarrage de la base de données
 
     cd docker/dev
     docker-compose up
@@ -67,7 +67,7 @@ Il comporte :
 
 * il ya un document de configuration de Jenkins dans doc/config-jenkins.pdf
 
-### Déploiement
+### Construction du binaire
 
 * `cd /src`
 * `mvn clean install -P test-consumer,test-business`
