@@ -72,4 +72,5 @@ Il comporte :
 * `cd /src`
 * `mvn clean install -P test-consumer,test-business`
 
+Quand l'opération se passe bien, les `rapports de couvertures` sont créés dans les dossiers `target/site/jaccoco` de chaque chaque module. Il suffit d'ouvrir les fichiers html correspondant pour voir les `rapports de couvertures`
 
